@@ -1,0 +1,6 @@
+.DS_Store
+.nova
+bin/
+project_files
+src/assets
+*.pdx

@@ -1,0 +1,7 @@
+name=Platform Panik
+author=David Bard
+description=WarioWare for Platformers
+bundleID=com.barddro.platformpanik
+version=1.0
+imagePath=assets/
+buildNumber=1
