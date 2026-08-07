@@ -12,20 +12,19 @@ function RunManager:init(lives)
     self.roundOutcomes = {}
     self.runLevels = {}
     self.loadedLevels = {}
-    self.events = EventBus()
-    self.gameTimer = GameTimer(5, self.events)
+    self.gameTimer = GameTimer(5)
 
-    self.events:on("level_complete", function()
+    Events:on("level_complete", function()
         print("Event emitted: level_complete")
         self:next(RoundOutcome.WIN)
     end)
 
-    self.events:on("player_died", function()
+    Events:on("player_died", function()
         print("Event emitted: player_died")
         self:next(RoundOutcome.LOSE)
     end)
 
-    self.events:on("timer_finish", function()
+    Events:on("timer_finish", function()
         print("Event emitted: timer_finish")
         self:next(RoundOutcome.LOSE)
     end)
@@ -60,7 +59,7 @@ end
 
 function RunManager:next(outcome)
     startTransition(
-        function () 
+        function ()
             table.insert(self.roundOutcomes, outcome)
             if outcome == RoundOutcome.LOSE then self.lives -= 1 end
             if self.lives <= 0 then self:goLose() end
@@ -76,7 +75,6 @@ function RunManager:startRun()
     -- FOR TESTING:
     self:setLevelSequence({"Level_0", "Level_1"})
     self.loadedLevels[self.runLevels[1]]:goTo()
-    Player.getInstance():setScene(self)
 end
 
 class('FiniteRunManager').extends(RunManager)

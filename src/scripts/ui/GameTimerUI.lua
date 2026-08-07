@@ -3,7 +3,7 @@ local gfx <const> = playdate.graphics
 
 class('GameTimerUI').extends(gfx.sprite)
 
-function GameTimerUI:init(x, y, gameTimer)
+function GameTimerUI:init(gameTimer, x, y)
     GameTimerUI.super.init(self)
 
     self.gameTimer = gameTimer

@@ -1,7 +1,5 @@
-local GoalBehavior = {}
+GoalBehaviour = {}
 
-function GoalBehavior.onPlayerCollision(entity, player, scene)
-    scene.events:emit("level_complete")
+function GoalBehaviour.onPlayerCollision()
+    Events:emit("level_complete")
 end
-
-return GoalBehavior

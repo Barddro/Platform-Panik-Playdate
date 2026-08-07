@@ -50,12 +50,6 @@ function Player:init(x, y)
 	-- Player State
 	self.touchingGround = false
 	self.dead = false
-	self.scene = nil
-end
-
-
-function Player:setScene(scene)
-	self.scene = scene
 end
 
 function Player:collisionResponse(other)
@@ -115,7 +109,7 @@ function Player:handleMovementAndCollisions()
 		end
 
 		if collisionObject.onPlayerCollision then
-			collisionObject:onPlayerCollision(self, self.scene)
+			collisionObject:onPlayerCollision()
 		end
 
 		if died then

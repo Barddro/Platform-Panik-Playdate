@@ -29,4 +29,9 @@ function EventBus:emit(event, ...)
     end
 end
 
+-- clears all event triggers
+function EventBus:reset()
+    self.listeners = {}
+end
+
 return EventBus

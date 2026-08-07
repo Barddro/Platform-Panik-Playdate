@@ -4,3 +4,4 @@ bin/
 project_files
 src/assets
 *.pdx
+repomix-output.xml

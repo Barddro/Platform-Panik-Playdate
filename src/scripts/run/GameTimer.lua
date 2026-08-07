@@ -3,11 +3,11 @@ local gfx <const> = playdate.graphics
 
 class('GameTimer').extends()
 
-function GameTimer:init(dur, events)
+function GameTimer:init(dur)
     self.shouldDraw = true
     self.dur = dur
     self.timer = pd.timer.new(dur*1000, function ()
-        events:emit("timer_finish")
+        Events:emit("timer_finish")
     end
     )
     self.timer:pause()

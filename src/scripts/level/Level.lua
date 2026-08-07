@@ -14,21 +14,6 @@ local ldtk <const> = LDtk
 
 ]]
 
--- move everything below into ldtk entity data
-TAGS = {
-	Player = 1,
-	Hazard = 2,
-	Flag = 3
-}
-
-Z_INDEXES = {
-	Player = 100,
-	UI = 90,
-	Hazard = 50,
-	Flag = 45,
-	Timer = 40,
-}
-
 -- class GameScene
 class('Level').extends()
 
@@ -67,8 +52,8 @@ function Level:goTo()
 		if layer.entities then
 			for _, entity in ipairs(layer.entities) do
 				print(entity.name)
+				print(ENTITY_DATA)
 				local data = ENTITY_DATA[entity.name]
-				print(data)
 				-- may want to move from name to other field
 				if data.class then
 					data.class.fromEntity(entity)
@@ -79,8 +64,5 @@ function Level:goTo()
 			end
 		end
 	end
-
- 
-
-	-- insert fade/animation to level here
+	-- insert fade/animation to level here?
 end

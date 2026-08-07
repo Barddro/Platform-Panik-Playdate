@@ -8,7 +8,8 @@ class('GameManager').extends()
 
 function GameManager:init()
     LDtk.load("assets/levels/world.ldtk", false)
-    local runManager = RunManager()
-    local runManagerUI = RunManagerUI(runManager)
+    Events = EventBus()
+    local runManager = RunManager(3)
+    local runUI = RunUI(runManager)
     runManager:startRun()
 end
