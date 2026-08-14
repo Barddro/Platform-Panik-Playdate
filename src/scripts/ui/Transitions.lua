@@ -28,8 +28,10 @@ function invertedCircleTransition(startValue, endValue, transitionTime)
     image:setMaskImage(makeCircleMask(startValue))
 
     local transitionTimer = pd.timer.new(transitionTime, startValue, endValue, pd.easingFunctions.inOutCubic)
+    
     transitionTimer.updateCallback = function(timer)
         image:setMaskImage(makeCircleMask(timer.value))
+        transitionSprite:markDirty()
     end
 
     return transitionTimer, transitionSprite

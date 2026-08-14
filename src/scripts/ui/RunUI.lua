@@ -7,11 +7,5 @@ class('RunUI').extends()
 function RunUI:init(RunManager)
     self.components = {}
     -- may want to store this as data in a data file, including self.components.GameTimer.x = ___,  self.components.GameTimer.y = ___, etc
-    self.components.GameTimer = GameTimerUI(RunManager.gameTimer, 50, 50)
-end
-
-function RunUI:draw()
-    for name, component in pairs(self.components) do
-        component:draw()
-    end
+    self.components.GameTimer = GameTimerUI(RunManager.gameTimer, 200, 25)
 end

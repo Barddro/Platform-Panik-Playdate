@@ -8,8 +8,6 @@ local instance = nil   -- module-level singleton reference; not visible outside 
 function Player.fromEntity(entity)
     if instance then
         instance:moveTo(entity.position.x, entity.position.y)
-        instance:add()   -- Level:goTo() calls gfx.sprite.removeAll(), which wipes
-                          -- the player off the display list too — re-add it here.
     else
         instance = Player(entity.position.x, entity.position.y)
     end

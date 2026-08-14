@@ -15,6 +15,7 @@ import "scripts/lib/AnimatedSprite"
 import "scripts/lib/LDtk"
 
 -- Top-Level
+import "scripts/Async"
 import "scripts/EventBus"
 
 -- Level

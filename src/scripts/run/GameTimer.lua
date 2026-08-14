@@ -14,22 +14,24 @@ function GameTimer:init(dur)
 end
 
 function GameTimer:pause()
-    self.timer.pause()
+    self.timer:pause()
 end
 
 function GameTimer:start()
-    self.timer:startTimer()
+    self.timer:start()
 end
 
 function GameTimer:reset()
-    self.timer.reset()
-    self.timer.pause()
+    self.timer:reset()
+    self.timer:pause()
 end
 
 function GameTimer:resetTo(new_dur)
     self.dur = new_dur
     -- reset to new dur here
 end
+
+
 
 
 

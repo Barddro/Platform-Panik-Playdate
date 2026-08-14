@@ -19,15 +19,25 @@ class('Level').extends()
 
 function Level:init(level_name)
     self.levelName = level_name
+	self.sprites = {}
 	ldtk.load_level(level_name)
 end
 
+function Level:addSprite(sprite)
+    sprite:add()
+    table.insert(self.sprites, sprite)
+    return sprite
+end
+
 function Level:goTo()
-	-- insert fade/animation to black here
-	gfx.sprite.removeAll()
+
+	local filledRect = gfx.image.new(400, 240, gfx.kColorBlack)
+    local bgRect = gfx.sprite.new(filledRect)
+	bgRect:moveTo(200, 120)
+	bgRect:setZIndex(0)
+	self:addSprite(bgRect)
 
 	-- refactor below to use actual layer names for tiles
-
 	for layer_name, layer in pairs(ldtk.get_layers(self.levelName)) do
 		-- handle tiles
 		if layer.tiles then
@@ -38,12 +48,18 @@ function Level:goTo()
 			layerSprite:setCenter(0, 0)
 			layerSprite:moveTo(0, 0)
 			layerSprite:setZIndex(layer.zIndex)
-			layerSprite:add()
+			self:addSprite(layerSprite)
+			-- for now, we will add to sprites at each 'part' (tilemap, entity, etc.) but may want to refactor later to generalize more, will avoid weird bugs
 			
 			-- Collision
 			local emptyTiles = ldtk.get_empty_tileIDs(self.levelName, "Solid", layer_name)
 			if emptyTiles then
-				gfx.sprite.addWallSprites(tilemap, emptyTiles)
+				wallTiles = gfx.sprite.addWallSprites(tilemap, emptyTiles)
+				print(wallTiles)
+				for _, tile in ipairs(wallTiles) do
+					print(tile)
+					self:addSprite(tile)
+				end
 			end
 		end
 
@@ -56,7 +72,8 @@ function Level:goTo()
 				local data = ENTITY_DATA[entity.name]
 				-- may want to move from name to other field
 				if data.class then
-					data.class.fromEntity(entity)
+					concreteEntity = data.class.fromEntity(entity)
+					self:addSprite(concreteEntity)
 				else
 					print("WARNING: Unknown entity: ", entity.name)
 				end
@@ -65,4 +82,12 @@ function Level:goTo()
 		end
 	end
 	-- insert fade/animation to level here?
+end
+
+function Level:cleanup()
+    for _, sprite in ipairs(self.sprites) do
+        sprite:remove()
+    end
+
+    self.sprites = {}
 end

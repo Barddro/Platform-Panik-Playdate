@@ -7,7 +7,6 @@ function GameTimerUI:init(gameTimer, x, y)
     GameTimerUI.super.init(self)
 
     self.gameTimer = gameTimer
-    self.shouldDraw = true
 
     self:setSize(100, 30)
     self:setCenter(0.5, 0.5)
@@ -26,16 +25,17 @@ end
 
 function GameTimerUI:draw()
     local w, h = self:getSize()
+
+    gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
     gfx.drawTextAligned(
         self:formatRemainingTime(),
         w / 2,
         h / 2,
-        gfx.kTextAlignment.center
+        kTextAlignment.center
     )
+    gfx.setImageDrawMode(gfx.kDrawModeCopy)
 end
 
 function GameTimerUI:update()
-    if self.shouldDraw then
-        self:markDirty()
-    end
+    self:markDirty()
 end

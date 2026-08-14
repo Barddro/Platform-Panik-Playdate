@@ -12,7 +12,6 @@ function Entity:init(x, y)
 
     self:setCenter(0, 0)
     self:moveTo(x, y)
-    self:add()
 end
 
 function Entity:addBehaviour(behaviour)
