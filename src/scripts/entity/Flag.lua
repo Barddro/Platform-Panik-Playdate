@@ -22,9 +22,5 @@ function Flag:init(x, y)
 end
 
 function Flag.fromEntity(entity, ...)
-    --[[for key, val in pairs(entity.position) do
-        print("key: ", key)
-        print("value: ", val)
-    end]]
     return Flag(entity.position.x, entity.position.y)
 end

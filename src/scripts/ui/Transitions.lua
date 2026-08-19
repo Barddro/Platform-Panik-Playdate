@@ -13,24 +13,24 @@ function createTransitionSprite()
     return transitionSprite, filledRect
 end
 
-local function makeCircleMask(radius)
-    local mask = gfx.image.new(SCREEN_W, SCREEN_H, gfx.kColorWhite) -- start opaque (fully masked out)
-    gfx.pushContext(mask)
-        gfx.setColor(gfx.kColorBlack) -- black = visible hole in the mask
-        gfx.fillCircleAtPoint(200, 120, radius)
-    gfx.popContext()
-    return mask
-end
-
 function invertedCircleTransition(startValue, endValue, transitionTime)
     local transitionSprite, image = createTransitionSprite()
 
-    image:setMaskImage(makeCircleMask(startValue))
+    local function _makeCircleMask(radius)
+        local mask = gfx.image.new(SCREEN_W, SCREEN_H, gfx.kColorWhite) -- start opaque (fully masked out)
+        gfx.pushContext(mask)
+            gfx.setColor(gfx.kColorBlack) -- black = visible hole in the mask
+            gfx.fillCircleAtPoint(200, 120, radius)
+        gfx.popContext()
+        return mask
+    end
+
+    image:setMaskImage(_makeCircleMask(startValue))
 
     local transitionTimer = pd.timer.new(transitionTime, startValue, endValue, pd.easingFunctions.inOutCubic)
     
     transitionTimer.updateCallback = function(timer)
-        image:setMaskImage(makeCircleMask(timer.value))
+        image:setMaskImage(_makeCircleMask(timer.value))
         transitionSprite:markDirty()
     end
 
@@ -38,7 +38,7 @@ function invertedCircleTransition(startValue, endValue, transitionTime)
 end
 
 function startTransition(onTransitionEndCallback)
-    local transitionTimer, transitionSprite = invertedCircleTransition(450, 0, 500) -- 500ms, tweak as needed
+    local transitionTimer, transitionSprite = invertedCircleTransition(450, 0, 500)
     transitionTimer.timerEndedCallback = function()
         transitionSprite:remove()
         if onTransitionEndCallback then

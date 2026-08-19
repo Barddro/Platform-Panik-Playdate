@@ -55,9 +55,7 @@ function Level:goTo()
 			local emptyTiles = ldtk.get_empty_tileIDs(self.levelName, "Solid", layer_name)
 			if emptyTiles then
 				wallTiles = gfx.sprite.addWallSprites(tilemap, emptyTiles)
-				print(wallTiles)
 				for _, tile in ipairs(wallTiles) do
-					print(tile)
 					self:addSprite(tile)
 				end
 			end
@@ -67,15 +65,13 @@ function Level:goTo()
 		-- probably will want to implement flyweight here for spikes or other entities that share metadata
 		if layer.entities then
 			for _, entity in ipairs(layer.entities) do
-				print(entity.name)
-				print(ENTITY_DATA)
 				local data = ENTITY_DATA[entity.name]
 				-- may want to move from name to other field
 				if data.class then
 					concreteEntity = data.class.fromEntity(entity)
 					self:addSprite(concreteEntity)
 				else
-					print("WARNING: Unknown entity: ", entity.name)
+					logger.waring("Unknown entity:", entity.name)
 				end
 
 			end

@@ -7,6 +7,8 @@ function EventBus:init()
 end
 
 function EventBus:on(event, fn)
+    logger.info("registered event: " .. event)
+
     self.listeners[event] = self.listeners[event] or {}
     table.insert(self.listeners[event], fn)
 
@@ -24,7 +26,7 @@ end
 
 function EventBus:withEventBlocked(event, callback)
     if not self.listeners[event] then
-        print(string.format("Warning: %s is not a registered event", event))
+        logger.warning(event .. " is not a registered event")
     end
     self._blockedEvents[event] = true
 
@@ -40,7 +42,7 @@ end
 function EventBus:withEventsBlocked(events, fn)
     for _, event in ipairs(events) do
         if not self.listeners[event] then
-            print(string.format("Warning: %s is not a registered event", event))
+            logger.warning(event .. " is not a registered event")
         end
         self._blockedEvents[event] = true
     end
@@ -55,7 +57,7 @@ function EventBus:withEventsBlocked(events, fn)
         fn()
         unblock()
     end, function(err)
-        unblock()      -- still unblock on error ("finally" semantics)
+        unblock() -- still unblock on error ("finally" semantics)
         error(err, 0)
     end)
 end
@@ -74,8 +76,14 @@ end
 
 
 function EventBus:emit(event, ...)
+    logger.info("event emitted: " .. event)
     local list = self.listeners[event]
-    if not list or self._blockAllEvents or self._blockedEvents[event] then return end
+
+    if not list then logger.warning("event" .. event .. "not registered") end
+
+    if not list or self._blockAllEvents or self._blockedEvents[event] then
+        return
+    end
 
     for _, callback in ipairs(list) do
         callback(...)

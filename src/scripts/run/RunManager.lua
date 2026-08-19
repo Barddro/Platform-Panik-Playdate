@@ -12,12 +12,11 @@ function RunManager:init(lives)
     self.roundOutcomes = {}
     self.runLevels = {}
     self.loadedLevels = {}
-    self.gameTimer = GameTimer(5)
+    self.gameTimer = GameTimer(7)
 
     -- probably want to register these when the first instance of an entity that emits these events gets instantiated, not in RunManager (single responsibility)
     Events:on("level_complete", function()
         Events:withAllEventsBlocked(function()
-            print("Event emitted: level_complete")
             Async.await(startTransition)
             self:next(RoundOutcome.WIN)
         end)
@@ -25,7 +24,6 @@ function RunManager:init(lives)
 
     Events:on("player_died", function()
         Events:withAllEventsBlocked(function()
-            print("Event emitted: player_died")
             Async.await(startTransition)
             self:next(RoundOutcome.LOSE)
         end)
@@ -33,7 +31,6 @@ function RunManager:init(lives)
 
     Events:on("timer_finish", function()
         Events:withAllEventsBlocked(function()
-            print("Event emitted: timer_finish")
             Async.await(startTransition)
             self:next(RoundOutcome.LOSE)
         end)
@@ -59,13 +56,15 @@ function RunManager:setLevelSequence(levels)
 end
 
 function RunManager:goWin()
+    Events:emit("run_win")
 end
 
 function RunManager:goLose()
+    -- may want to move this out of function call
+    Events:emit("run_lose")
 end
 
 function RunManager:next(outcome)
-    print("calling run manager next method")
     table.insert(self.roundOutcomes, outcome)
     if outcome == RoundOutcome.LOSE then self.lives -= 1 end
     self.loadedLevels[self.runLevels[self.round]]:cleanup()
@@ -77,7 +76,7 @@ function RunManager:startRun()
     
     --self:generateLevelSequence()
     -- FOR TESTING:
-    self:setLevelSequence({"Level_0", "Level_1"})
+    self:setLevelSequence({"Level_0", "Level_1", "Level_2", "Level_3", "Level_4"})
     self.loadedLevels[self.runLevels[1]]:goTo()
     self.gameTimer:start()
 end
@@ -92,7 +91,7 @@ end
 function FiniteRunManager:next(outcome)
     FiniteRunManager.super.next(self, outcome)
 
-    if self.round >= self.maxRound then
+    if self.round >= self.maxRound or self.round >= #self.runLevels then
         self:goWin()
     else
         self.loadedLevels[self.runLevels[self.round]]:goTo()
