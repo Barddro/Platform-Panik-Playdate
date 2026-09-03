@@ -12,6 +12,7 @@ function GameTimerUI:init(gameTimer, x, y)
     self:setCenter(0.5, 0.5)
     self:moveTo(x, y)
     self:setZIndex(Z_INDEXES.UI)
+    self:setIgnoresDrawOffset(true)
     self:add()
 end
 

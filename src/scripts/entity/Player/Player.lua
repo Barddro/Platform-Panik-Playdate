@@ -19,6 +19,7 @@ function Player.getInstance()
 end
 
 function Player:init(x, y)
+
 	local playerImageTable = gfx.imagetable.new(GRAPHICS_PATH .. "entities/player-table-32-32")
 	Player.super.init(self, playerImageTable)
 

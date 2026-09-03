@@ -30,7 +30,7 @@ function Level:addSprite(sprite)
 end
 
 function Level:goTo()
-
+	-- TODO: change to create background as size of level, not just screen size
 	local filledRect = gfx.image.new(400, 240, gfx.kColorBlack)
     local bgRect = gfx.sprite.new(filledRect)
 	bgRect:moveTo(200, 120)

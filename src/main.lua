@@ -41,6 +41,7 @@ import "scripts/behaviour/KillBehaviour"
 -- Run/Game
 import "scripts/game/EventBus"
 import "scripts/run/GameTimer"
+import "scripts/game/Camera"
 import "scripts/run/RunManager"
 import "scripts/game/GameManager"
 
@@ -55,10 +56,13 @@ import "scripts/ui/Transitions"
 import "scripts/data/EntityData"
 import "scripts/data/SpriteData"
 
+gfx.setBackgroundColor(gfx.kColorBlack)
+
 logger = Logger()
 GameManager()
 
 function pd.update()
 	pd.timer.updateTimers()
 	gfx.sprite.update()
+	Camera.getInstance():update()
 end

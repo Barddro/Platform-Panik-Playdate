@@ -7,12 +7,13 @@ class('RunManager').extends()
 
 function RunManager:init(lives)
     self.difficulty = Difficulty.EASY
-    self.round = 1 -- lua table indexing conventionally starts at 1
+    self.round = 1
     self.lives = lives
     self.roundOutcomes = {}
     self.runLevels = {}
     self.loadedLevels = {}
     self.gameTimer = GameTimer(7)
+
 
     -- probably want to register these when the first instance of an entity that emits these events gets instantiated, not in RunManager (single responsibility)
     Events:on("level_complete", function()
@@ -77,7 +78,19 @@ function RunManager:startRun()
     --self:generateLevelSequence()
     -- FOR TESTING:
     self:setLevelSequence({"Level_0", "Level_1", "Level_2", "Level_3", "Level_4"})
+
     self.loadedLevels[self.runLevels[1]]:goTo()
+
+    player = Player.getInstance()
+    if player then
+        camera = Camera.getInstance()
+        camera:setPositionGetters(
+            function () return -player.x + 200 end,
+            function () return -player.y + 120 end
+        )
+        camera:enable()
+    end
+
     self.gameTimer:start()
 end
 

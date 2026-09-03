@@ -57,13 +57,15 @@ function EventBus:withEventsBlocked(events, fn)
         fn()
         unblock()
     end, function(err)
-        unblock() -- still unblock on error ("finally" semantics)
+        unblock()
         error(err, 0)
     end)
 end
 
 function EventBus:withAllEventsBlocked(fn)
     self._blockAllEvents = true
+
+    logger.info("all events are now being blocked")
 
     Async.run(function()
         fn()
@@ -82,6 +84,7 @@ function EventBus:emit(event, ...)
     if not list then logger.warning("event" .. event .. "not registered") end
 
     if not list or self._blockAllEvents or self._blockedEvents[event] then
+        logger.info("tried to emit event while event is blocked")
         return
     end
 
